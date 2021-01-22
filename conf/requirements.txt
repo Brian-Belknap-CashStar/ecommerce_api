@@ -1,0 +1,76 @@
+# Python specific
+mysqlclient==1.4.4
+path.py==12.0.1
+yolk==0.4.3
+coverage==4.5.3
+requests==2.24.0
+urllib3==1.25.10
+Markdown==2.6.8
+future==0.17.1
+boto3==1.9.0
+openpyxl==2.5.9
+
+# Django specific
+Django==2.2.17
+django-extensions==2.2.9
+django-model-utils==4.0.0
+django-coverage==1.2.4
+python-dateutil==2.8.0
+
+pylibmc==1.5.2
+git+https://github.com/CashStar/django-elasticache.git@1.0.4
+
+xlrd
+pylint
+
+pep8==1.7.0
+pyflakes==2.1.1
+
+newrelic==4.16.1.117
+uWSGI==2.0.18
+ConcurrentLogHandler==0.9.1
+raven==6.10.0
+
+django-cache-utils==0.7.2
+djangorestframework==3.12.2
+django-filter==2.3.0
+
+ipython==7.15.0
+munch==2.1.0
+
+# testing & coverage
+mock==2.0.0
+pytest==5.4.3
+pytest-cov==2.10.0
+pytest-mock==3.1.1
+pytest-django==3.9.0
+requests-mock==1.5.2
+freezegun==0.3.10
+
+# Docs
+drf-yasg==1.20.0
+
+# CashStar libs
+git+ssh://git@git.blackhawknetwork.com:7999/ocs/cs_crypt@release/2021.01.01
+git+ssh://git@git.blackhawknetwork.com:7999/ocs/cs_statsd@release/2021.01.01
+git+ssh://git@git.blackhawknetwork.com:7999/ocs/cstar_clients@release/2021.01.01
+git+ssh://git@git.blackhawknetwork.com:7999/ocs/cstar_lib@release/2021.01.01
+git+ssh://git@git.blackhawknetwork.com:7999/ocs/fastly_lib@release/2021.01.01
+git+ssh://git@git.blackhawknetwork.com:7999/ocs/jet_setting@2.0.2
+git+ssh://git@git.blackhawknetwork.com:7999/ocs/service_versioning_app@release/2021.01.01
+
+# AMQP/Celery requirements
+celery==4.2.1
+kombu==4.2.2.post1
+amqp==2.3.2
+billiard==3.5.0.3
+vine==1.3.0
+
+# Static Analysis
+bandit==1.5.1
+# SSL cert keystore utils
+pyopenssl==19.0.0
+cryptography==3.2.1
+pyjks==18.0.0
+
+django-enum-choices==2.1.2

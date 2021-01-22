@@ -1,0 +1,10 @@
+ARG BUILD_VERSION
+FROM ecommerce_api:${BUILD_VERSION}-base as dev-build
+
+# build scripts are expecting the file /opt/cashstar/app/static.tar.xz
+
+RUN mkdir -p /tmp/$APPLICATION_NAME/static/ && \
+    echo ${VERSION} > /tmp/$APPLICATION_NAME/version.txt && \
+    cp -r $APPLICATION_DIR/sitestatic/* /tmp/$APPLICATION_NAME/static/. && \
+    tar -cJvf static.tar.xz -C "/tmp/" "$APPLICATION_NAME" && \
+    mv $APPLICATION_DIR/static.tar.xz /opt/cashstar/app/.

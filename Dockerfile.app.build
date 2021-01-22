@@ -1,0 +1,38 @@
+ARG BUILD_VERSION
+ARG FORTIFY_APP_ID
+
+FROM ecommerce_api:${BUILD_VERSION}-base as dev-build
+
+# When the time comes to do ticket ARCH-4044 or a ticket cloned from it for this app the following line
+# would be uncommented.
+# RUN rm -rf $APPLICATION_DIR/static
+
+FROM 343548683418.dkr.ecr.us-east-1.amazonaws.com/python_production_base:ubuntu-latest
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y libxmlsec1-openssl && \
+    apt-get clean
+
+USER cashstar
+
+ARG BUILD_VERSION
+ARG FORTIFY_APP_ID
+
+COPY --chown=cashstar:cashstar --from=dev-build /opt/cashstar /opt/cashstar
+
+# these must be re-declared because of the from line above
+ENV VERSION $BUILD_VERSION
+ENV FORTIFY_APP_ID $FORTIFY_APP_ID
+ENV APPLICATION_NAME ecommerce_api
+ENV APPLICATION_DIR /opt/cashstar/app/$APPLICATION_NAME
+ENV DJANGO_SETTINGS_MODULE settings
+ENV APP_SETTING_PACKAGE $DJANGO_SETTINGS_MODULE
+ENV MANAGE_PY_LOCATION $APPLICATION_DIR/$APPLICATION_NAME
+ENV UWSGI_YAML_CONFIG_FILE_LOCATION $APPLICATION_DIR/conf/uwsgi.yml
+ENV NEW_RELIC_CONFIG_FILE $APPLICATION_DIR/conf/newrelic/newrelic.ini
+
+WORKDIR $APPLICATION_DIR
+
+ENTRYPOINT ["/opt/cashstar/app/ecommerce_api/docker/entrypoint.environments.sh"]

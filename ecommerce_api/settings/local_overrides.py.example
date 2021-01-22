@@ -1,0 +1,10 @@
+# from .local import  *  # Pointing at local DB, cache, amqp
+from .local_qa import *   # Pointing at all QA services
+
+# Copy this file and remove the .example suffix and then use the file as your local settings override.
+# Link in the file locally and it will be ignored by .gitignore and will not check in the personalization.
+# Instead make your modifications in thew new file local_overrides.py file
+# Only changes to base settings, local.py, or one of the environments will be in your PR.
+
+# Service URL overrides documented here:  
+#  https://cashstar.atlassian.net/wiki/spaces/ARCH/pages/584056833/Common+Service+URLs

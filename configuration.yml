@@ -1,0 +1,79 @@
+qa:
+  us-east-1:
+    external_settings:
+      jks:
+        bucket: cs-qa-configuration-management-us-east-1
+        src: ecommerce_api/mutualauth.cashstar.com.jks
+        target: mutualauth.cashstar.com.jks
+      default:
+        bucket: cs-qa-configuration-management-us-east-1
+        src: ecommerce_api/ecommerce_api.yml
+        target: settings.yml
+    settings:
+      src: ecommerce_api/ecommerce_api/settings/aws_qa_us_east_1.py
+      target: ecommerce_api/ecommerce_api/settings/currentenv.py
+    supervisor:
+      ecommerce_api: ecommerce_api/conf/supervisor/aws.conf
+    ACM:
+      acm_certificate_arn: arn:aws:acm:us-east-1:990822051480:certificate/da33694b-9e57-43af-b64e-5ac3a8eb6294
+      acm_permission_arn: arn:aws:iam::990822051480:role/acm-export-qa
+
+semi:
+  us-east-1:
+    external_settings:
+      jks:
+        bucket: cs-semi-configuration-management-us-east-1
+        src: ecommerce_api/mutualauth.cashstar.com.jks
+        target: mutualauth.cashstar.com.jks
+      default:
+        bucket: cs-semi-configuration-management-us-east-1
+        src: ecommerce_api/ecommerce_api.yml
+        target: settings.yml
+    settings:
+      src: ecommerce_api/ecommerce_api/settings/aws_semi_us_east_1.py
+      target: ecommerce_api/ecommerce_api/settings/currentenv.py
+    supervisor:
+      ecommerce_api: ecommerce_api/conf/supervisor/aws.conf
+    ACM:
+      acm_certificate_arn: arn:aws:acm:us-east-1:990822051480:certificate/fa81272e-a0dd-46b7-bab0-6ab0b20ccdd7
+      acm_permission_arn: arn:aws:iam::990822051480:role/acm-export-semi
+
+prod:
+  us-east-1:
+    external_settings:
+      jks:
+        bucket: cs-prod-configuration-management-us-east-1
+        src: ecommerce_api/mutualauth.cashstar.com.jks
+        target: mutualauth.cashstar.com.jks
+      default:
+        bucket: cs-prod-configuration-management-us-east-1
+        src: ecommerce_api/ecommerce_api.yml
+        target: settings.yml
+    settings:
+      src: ecommerce_api/ecommerce_api/settings/aws_prod_us_east_1.py
+      target: ecommerce_api/ecommerce_api/settings/currentenv.py
+    supervisor:
+      ecommerce_api: ecommerce_api/conf/supervisor/aws.conf
+    ACM:
+      acm_certificate_arn: arn:aws:acm:us-east-1:990822051480:certificate/8b0ba883-19a0-49cf-8e3c-006e43541ddb
+      acm_permission_arn: arn:aws:iam::990822051480:role/acm-export-prod-east
+
+  us-west-2:
+    external_settings:
+      jks:
+        bucket: cs-prod-configuration-management-us-west-2
+        src: ecommerce_api/mutualauth.cashstar.com.jks
+        target: mutualauth.cashstar.com.jks
+      default:
+        bucket: cs-prod-configuration-management-us-west-2
+        src: ecommerce_api/ecommerce_api.yml
+        target: settings.yml
+    settings:
+      src: ecommerce_api/ecommerce_api/settings/aws_prod_us_west_2.py
+      target: ecommerce_api/ecommerce_api/settings/currentenv.py
+    supervisor:
+      ecommerce_api: ecommerce_api/conf/supervisor/aws.conf
+    ACM:
+      acm_certificate_arn: arn:aws:acm:us-east-1:990822051480:certificate/9de15d5b-526f-4b67-a6a3-3dc08dc7069c
+      acm_permission_arn: arn:aws:iam::990822051480:role/acm-export-prod-west
+

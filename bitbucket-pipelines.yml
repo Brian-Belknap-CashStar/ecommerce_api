@@ -1,0 +1,52 @@
+image: anigeo/awscli # AWS cli from PIP on Alpine Linux
+pipelines:
+  branches:
+    # only run on release branches
+    "{[1-9],[0-9][0-9]}_[0-9][0-9]{,_onboarding}":
+      -
+        step:
+          script:
+            # set image name to the name of the repo and tag name to the branch
+            - export IMAGE_NAME=$BITBUCKET_REPO_SLUG
+            - export TAG_NAME=$BITBUCKET_BRANCH
+            - "echo \"Building branch image as: $IMAGE_NAME:$TAG_NAME\""
+
+            # authenticate with the AWS Container Repository
+            - aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION | sh
+
+            # build the Docker image (this will use the Dockerfile in the root of the repo)
+            - docker build --tag=$IMAGE_NAME:$TAG_NAME .
+            - docker tag $IMAGE_NAME:$TAG_NAME $AWS_ECR_URI/$IMAGE_NAME:$TAG_NAME
+
+            # push the new Docker image to the AWS Container Repository
+            - docker push $AWS_ECR_URI/$IMAGE_NAME:$TAG_NAME
+
+    # only run on the default branch
+    "default":
+      -
+        step:
+          script:
+            # set image name to the name of the repo and tag name to "latest"
+            - export IMAGE_NAME=$BITBUCKET_REPO_SLUG
+            - export TAG_NAME="latest"
+            - "echo \"Building default image as: $IMAGE_NAME:$TAG_NAME\" "
+
+            # authenticate with the AWS Container Repository
+            - aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION | sh
+
+            # build the Docker image (this will use the Dockerfile in the root of the repo)
+            - docker build --tag=$IMAGE_NAME .
+            - docker tag $IMAGE_NAME:$TAG_NAME $AWS_ECR_URI/$IMAGE_NAME:$TAG_NAME
+
+            # push the new Docker image to the AWS Container Repository
+            - docker push $AWS_ECR_URI/$IMAGE_NAME:$TAG_NAME
+
+  default:
+    -
+      step:
+        script:
+          - "echo \"This commit was not on the default branch, no build will occur\""
+
+# enable Docker for your repository
+options:
+  docker: true

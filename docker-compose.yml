@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+
+  ecommerce.local:
+    container_name: "ecommerce"
+    build: ecommerce_api
+    restart: always
+    secrets:
+      - settings.yml
+      - cashstar_config_key_private
+      - cashstar_config_key_public
+    ports:
+      - "8000:8000"
+    environment:
+      # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#environment-variable-configuration
+      AWS_PROFILE: semi
+      DJANGO_SETTINGS_MODULE: settings
+      BASE_SETTINGS_MODULE: local_overrides
+    command:
+      - /opt/cashstar/app/bin/python
+      - /opt/cashstar/app/ecommerce_api/ecommerce_api/manage.py
+      - runserver
+      - 0.0.0.0:8000
+    volumes:
+      - .:/opt/cashstar/app/ecommerce_api
+      - $HOME/.ssh:/opt/cashstar/.ssh
+      - $HOME/.docker/keys:/opt/cashstar/docker_keys
+
+secrets:
+  settings.yml:
+    file: ./test_data/dev_settings.yaml
+  cashstar_config_key_private:
+    file: /opt/cashstar/configs/key/key
+  cashstar_config_key_public:
+    file: /opt/cashstar/configs/key/key.pub

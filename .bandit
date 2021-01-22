@@ -1,0 +1,7 @@
+[bandit]
+# Skip assert checks
+# Skip FTP imports in favor of B321 usage checks
+skips:B101,B402
+# Skip script files
+# Skip mocks
+exclude:runtests.py,settings,core/tests,promo/tests

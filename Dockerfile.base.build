@@ -1,0 +1,33 @@
+FROM 343548683418.dkr.ecr.us-east-1.amazonaws.com/python_development_base:ubuntu-latest as dev-build
+
+ARG BUILD_VERSION
+ARG FORTIFY_APP_ID
+
+ENV VERSION $BUILD_VERSION
+ENV FORTIFY_APP_ID $FORTIFY_APP_ID
+ENV VERSION ${BUILD_VERSION}
+ENV APPLICATION_NAME ecommerce_api
+ENV APPLICATION_DIR /opt/cashstar/app/$APPLICATION_NAME
+ENV MANAGE_PY_LOCATION $APPLICATION_DIR/$APPLICATION_NAME
+
+COPY --chown=cashstar:cashstar . $APPLICATION_DIR
+
+WORKDIR $APPLICATION_DIR
+
+USER cashstar
+
+RUN mv $APPLICATION_DIR/.ssh /opt/cashstar/ && \
+    # directory for uwsgi pid file
+    mkdir /opt/cashstar/app/run/ && \
+    /opt/cashstar/app/bin/pip install -r $APPLICATION_DIR/conf/requirements.txt && \
+    find . -type f -name *.pyc -exec rm -vf {} \; && \
+    rm -Rf .pytest_cache && \
+    cd $MANAGE_PY_LOCATION && \
+    DJANGO_SETTINGS_MODULE=settings.test /opt/cashstar/app/bin/python runtests.py --junitxml junit.xml --cov-config .coveragerc --cov-report xml --cov . && \
+    DJANGO_SETTINGS_MODULE=settings.test /opt/cashstar/app/bin/python $MANAGE_PY_LOCATION/manage.py collectstatic --noinput && \
+    find . -type f -name *.pyc -exec rm -vf {} \; && \
+    rm -Rf .pytest_cache && \
+    mkdir /opt/cashstar/test_results && \
+    mv $MANAGE_PY_LOCATION/coverage.xml /opt/cashstar/test_results/. && \
+    mv $MANAGE_PY_LOCATION/junit.xml /opt/cashstar/test_results/. && \
+    rm -rf /opt/cashstar/.ssh

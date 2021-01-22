@@ -1,0 +1,39 @@
+uwsgi:
+  master: true
+  die-on-term: true
+  procname-master: ecommerce_api-master
+  procname: ecommerce_api-worker
+  pidfile: /opt/cashstar/app/run/ecommerce_api.pid
+  chdir: /opt/cashstar/app/ecommerce_api/ecommerce_api/
+  pp: ..
+  listen: $(UWSGI_LISTEN_COUNT)
+  module: ecommerce_api.uwsgi
+  virtualenv: /opt/cashstar/app/
+  processes: $(UWSGI_PROCESS_COUNT)
+  thunder-lock: true
+  enable-threads: true
+  single-interpreter: true
+  post-buffering: 4096
+  reload-mercy: 1
+  socket-timeout: 10
+  http-timeout: 90
+  max-worker-lifetime: 21600
+  env: LC_ALL='en_US.UTF-8'
+  env: LANG='en_US.UTF-8'
+  log-x-forwarded-for: true
+  log-5xx: true
+  log-4xx: true
+  ignore-write-errors: true
+  vacuum: true
+  ksm: true
+  buffer-size: 32768
+  http-keepalive: true
+  https: 0.0.0.0:8443,$(SECRETS_LOCAL_PATH)/https.crt,$(SECRETS_LOCAL_PATH)/https.key,HIGH:!aNULL
+  cache2: name=static,items=100
+  static-cache-paths: 30
+  static-cache-paths-name: static
+  static-map: /static=/opt/cashstar/app/ecommerce_api/sitestatic
+  static-map: /favicon.ico=/opt/cashstar/app/ecommerce_api/sitestatic/favicon.ico
+  static-expires: '/* 43200'
+
+
